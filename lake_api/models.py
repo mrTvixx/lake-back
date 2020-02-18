@@ -2,6 +2,7 @@ from django.db import models
 from django.utils import timezone
 from datetime import datetime    
 
+
 class Post(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
     content = models.TextField()
@@ -21,6 +22,12 @@ class Post(models.Model):
             self.create_date = timezone.now()
         self.modified = timezone.now()
         return super(Post, self).save(*args, **kwargs)
+
+
+class FileUpload(models.Model):
+    created = models.DateTimeField(auto_now_add=True)
+    post = models.ForeignKey(Post, to_field='id', on_delete=models.CASCADE, related_name='files')
+    data_file = models.FileField(upload_to='media')
 
 
 class Comment(models.Model):

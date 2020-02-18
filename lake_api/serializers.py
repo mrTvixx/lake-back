@@ -1,10 +1,24 @@
-from .models import Comment, Post
+from .models import Comment, Post, FileUpload
 from rest_framework import serializers
 
+
+class FileUploadSerializer(serializers.ModelSerializer):
+    owner = serializers.SlugRelatedField(
+        read_only=True,
+        slug_field='id',
+    )
+
+    class Meta:
+        model = FileUpload
+        fields = '__all__'
+
+
 class PostSerializer(serializers.ModelSerializer):
+    files = FileUploadSerializer(many=True)
+    
     class Meta:
         model = Post
-        fields = '__all__'
+        fields = ('id', 'title', 'by_admin', 'publish_date', 'is_pablish', 'files')
 
 
 class CommentSerializer(serializers.ModelSerializer):
