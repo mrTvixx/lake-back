@@ -18,7 +18,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('id', 'title', 'by_admin', 'publish_date', 'is_pablish', 'files')
+        fields = ('id', 'title', 'by_admin', 'publish_date', 'is_publish', 'files', 'content')
 
 
 class CommentSerializer(serializers.ModelSerializer):

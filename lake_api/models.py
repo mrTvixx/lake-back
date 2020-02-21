@@ -1,6 +1,6 @@
 from django.db import models
 from django.utils import timezone
-from datetime import datetime    
+from datetime import datetime
 
 
 class Post(models.Model):
@@ -9,10 +9,7 @@ class Post(models.Model):
     by_admin = models.BooleanField(default=True)
     create_date = models.DateTimeField(null=True)
     publish_date = models.DateTimeField(null=True)
-    is_pablish = models.BooleanField(default=False)
-
-    class Meta:
-        ordering = ['publish_date']
+    is_publish = models.BooleanField(default=False)
 
     def __str__(self):
         return self.title
@@ -26,14 +23,15 @@ class Post(models.Model):
 
 class FileUpload(models.Model):
     created = models.DateTimeField(auto_now_add=True)
-    post = models.ForeignKey(Post, to_field='id', on_delete=models.CASCADE, related_name='files')
-    data_file = models.FileField(upload_to='media')
+    post = models.ForeignKey(
+        Post, to_field='id', on_delete=models.CASCADE, related_name='files')
+    data_file = models.FileField()
 
 
 class Comment(models.Model):
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     content = models.CharField(max_length=250)
     publish_date = models.DateTimeField(default=timezone.now(), blank=True)
-    
+
     class Meta:
         ordering = ['publish_date']
