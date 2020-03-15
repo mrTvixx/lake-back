@@ -5,7 +5,7 @@ from datetime import datetime
 
 class Post(models.Model):
     title = models.CharField(max_length=100, blank=True, default='')
-    content = models.TextField()
+    content = models.TextField(blank=True)
     by_admin = models.BooleanField(default=True)
     create_date = models.DateTimeField(null=True)
     publish_date = models.DateTimeField(null=True, blank=True)
@@ -20,6 +20,8 @@ class Post(models.Model):
             self.create_date = timezone.now()
         if self.is_publish and not self.publish_date:
             self.publish_date = timezone.now()
+        if self.username:
+            self.by_admin = False
         self.modified = timezone.now()
         return super(Post, self).save(*args, **kwargs)
 

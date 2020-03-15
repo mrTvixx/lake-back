@@ -17,7 +17,7 @@ class OnePostSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Post
-        fields = ('title', 'by_admin', 'content')
+        fields = ('title', 'by_admin', 'content', 'username')
 
 
 class PostSerializer(serializers.ModelSerializer):
@@ -25,7 +25,7 @@ class PostSerializer(serializers.ModelSerializer):
     
     class Meta:
         model = Post
-        fields = ('id', 'title', 'by_admin', 'publish_date', 'is_publish', 'files', 'content')
+        fields = ('id', 'title', 'by_admin', 'publish_date', 'is_publish', 'username', 'files', 'content')
 
 
 class CommentSerializer(serializers.ModelSerializer):
