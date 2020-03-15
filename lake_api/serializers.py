@@ -13,6 +13,13 @@ class FileUploadSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class OnePostSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Post
+        fields = ('title', 'by_admin', 'content')
+
+
 class PostSerializer(serializers.ModelSerializer):
     files = FileUploadSerializer(many=True)
     

@@ -8,8 +8,9 @@ class Post(models.Model):
     content = models.TextField()
     by_admin = models.BooleanField(default=True)
     create_date = models.DateTimeField(null=True)
-    publish_date = models.DateTimeField(null=True)
+    publish_date = models.DateTimeField(null=True, blank=True)
     is_publish = models.BooleanField(default=False)
+    username = models.CharField(blank=True, max_length=50, default='')
 
     def __str__(self):
         return self.title
@@ -17,6 +18,8 @@ class Post(models.Model):
     def save(self, *args, **kwargs):
         if not self.id:
             self.create_date = timezone.now()
+        if self.is_publish and not self.publish_date:
+            self.publish_date = timezone.now()
         self.modified = timezone.now()
         return super(Post, self).save(*args, **kwargs)
 

@@ -6,7 +6,7 @@ from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 
 from .models import Post, Comment, FileUpload
-from .serializers import PostSerializer, CommentSerializer, FileUploadSerializer
+from .serializers import PostSerializer, CommentSerializer, FileUploadSerializer, OnePostSerializer
 
 
 class CustomPagination(PageNumberPagination):
@@ -52,7 +52,7 @@ class PostsListView(generics.ListAPIView):
 class PostView(APIView):
     def post(self, request):
         new_post = request.data
-        serializer = PostSerializer(data=new_post)
+        serializer = OnePostSerializer(data=new_post)
 
         if serializer.is_valid(raise_exception=True):
             new_post_saved = serializer.save()
@@ -77,7 +77,7 @@ class SinglePostView(APIView):
         serializer_files = FileUploadSerializer(files, many=True)
 
         return Response(
-            {"post": serializer.data, 'files': serializer_files.data},
+            {"post": serializer.data},
             status=status.HTTP_200_OK,
         )
 
