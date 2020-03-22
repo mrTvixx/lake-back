@@ -20,15 +20,17 @@ class OnePostSerializer(serializers.ModelSerializer):
         fields = ('title', 'by_admin', 'content', 'username')
 
 
-class PostSerializer(serializers.ModelSerializer):
-    files = FileUploadSerializer(many=True)
-    
-    class Meta:
-        model = Post
-        fields = ('id', 'title', 'by_admin', 'publish_date', 'is_publish', 'username', 'files', 'content')
-
-
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
         fields = '__all__'
+
+
+class PostSerializer(serializers.ModelSerializer):
+    files = FileUploadSerializer(many=True)
+    comments = CommentSerializer(many=True)
+
+    class Meta:
+        model = Post
+        fields = ('id', 'title', 'by_admin', 'publish_date', 'comments',
+                  'is_publish', 'username', 'files', 'content')

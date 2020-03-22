@@ -10,9 +10,9 @@ from .serializers import PostSerializer, CommentSerializer, FileUploadSerializer
 
 
 class CustomPagination(PageNumberPagination):
-    page_size = 3
+    page_size = 4
     page_size_query_param = 'page_size'
-    max_page_size = 3
+    max_page_size = 4
 
     def get_paginated_response(self, data):
         return Response({
@@ -58,8 +58,7 @@ class PostView(APIView):
             new_post_saved = serializer.save()
 
         return Response(
-            {"success": "Article '{}' created successfully".format(
-                new_post_saved.title)},
+            {"id": new_post_saved.id},
             status=status.HTTP_201_CREATED,
         )
 
@@ -85,17 +84,21 @@ class SinglePostView(APIView):
 class CommentCreate(APIView):
 
     def post(self, request):
-        new_comment = request.data
-        serializer = CommentSerializer(data=new_comment)
+        response = request.data
+        serializer = CommentSerializer(data=response)
 
-        current_post = Post.objects.get(id=new_comment.get('post'))
-
+        current_post = Post.objects.get(id=response.get('post'))
         serializer.post = current_post
 
-        if serializer.is_valid(raise_exception=True):
+        if serializer.is_valid():
             new_post_saved = serializer.save()
 
-        return Response(status=status.HTTP_201_CREATED)
+        comments = Comment.objects.filter(post=current_post)
+        serializer_comments = CommentSerializer(comments, many=True)
+
+        return Response({
+            'data': serializer_comments.data,
+        }, status=status.HTTP_201_CREATED)
 
 
 class CommentView(APIView):
