@@ -3,6 +3,14 @@ from django.utils import timezone
 from datetime import datetime
 
 
+class FilterWord(models.Model):
+    word = models.CharField(verbose_name=("Слово для фильтрации"),
+                            default='', max_length=50)
+
+    def __str__(self):
+        return self.word
+
+
 class Post(models.Model):
     title = models.CharField(max_length=100, blank=True,
                              default='', verbose_name=u'')

@@ -5,8 +5,24 @@ from rest_framework.parsers import FormParser, MultiPartParser
 from rest_framework.pagination import PageNumberPagination
 from rest_framework import generics
 
-from .models import Post, Comment, FileUpload
-from .serializers import PostSerializer, CommentSerializer, FileUploadSerializer, OnePostSerializer
+from .models import Post, Comment, FileUpload, FilterWord
+from .serializers import PostSerializer, CommentSerializer, FileUploadSerializer, OnePostSerializer, SettingsSerializer
+
+
+class SiteSettings(APIView):
+
+    def get(self, request):
+        words = FilterWord.objects.all()
+
+        if not len(words):
+            return Response(status=status.HTTP_204_NO_CONTENT)
+
+        serializer = SettingsSerializer(words, many=True)
+
+        return Response(
+            {"words": serializer.data},
+            status=status.HTTP_200_OK,
+        )
 
 
 class CustomPagination(PageNumberPagination):

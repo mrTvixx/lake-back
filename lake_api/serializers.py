@@ -1,5 +1,12 @@
-from .models import Comment, Post, FileUpload
+from .models import Comment, Post, FileUpload, FilterWord
 from rest_framework import serializers
+
+
+class SettingsSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = FilterWord
+        fields = ['word']
 
 
 class FileUploadSerializer(serializers.ModelSerializer):

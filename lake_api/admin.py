@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Post, Comment, FileUpload
+from .models import Post, Comment, FileUpload, FilterWord
 
 
 class FilesInline(admin.StackedInline):
@@ -21,6 +21,7 @@ class PostAdmin(admin.ModelAdmin):
     ]
 
 
+admin.site.register(FilterWord)
 admin.site.register(Post, PostAdmin)
 admin.site.register(Comment)
 admin.site.register(FileUpload)
